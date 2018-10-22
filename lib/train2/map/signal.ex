@@ -5,13 +5,17 @@ defmodule Train2.Map.Signal do
   @turnout :turnout
   @clear :clear
 
-  defstruct location: nil, state: @stop
+  defstruct location: nil, has_turnout: false, state: @stop
 
   def new(location, state) do
     %__MODULE__{
       location: location,
-      state: state
+      state: state,
     }
+  end
+
+  def with_turnout(signal) do
+    %{signal|has_turnout: true}
   end
 
   defp by_location(list) do

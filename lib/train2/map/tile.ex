@@ -1,15 +1,27 @@
 defmodule Train2.Map.Tile do
   @moduledoc false
 
-  def occupied_with(location, vehicle) do
-    %{
-      location: location,
-      vehicle: vehicle
-    }
+  defp with_vehicle(tile, vehicle) do
+    if vehicle do
+      Map.put(tile, :vehicle, vehicle)
+    else
+      tile
+    end
   end
 
-  def at(location) do
-    %{ location: location }
+  defp with_signal(tile, signal) do
+    if signal do
+      Map.put(tile, :signal, signal)
+    else
+      tile
+    end
+  end
+
+  def occupied_with(location, vehicle, signal) do
+    tile = %{
+      location: location,
+    }
+    tile |> with_vehicle(vehicle) |> with_signal(signal)
   end
 
 end

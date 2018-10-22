@@ -24,6 +24,14 @@ defmodule Train2.Map.MapTest do
       tiles = Map.as_tiles(map)
       assert(tiles == [%{location: "A", vehicle: vehicle}, %{location: "B"}])
     end
+
+    test "converts map with signal to tiles" do
+      sections = [@sectionA, @sectionB]
+      signal = Signal.at_stop("A")
+      map = Map.new(sections, [], [signal])
+      tiles = Map.as_tiles(map)
+      assert(tiles == [%{location: "A", signal: signal}, %{location: "B"}])
+    end
   end
 
   describe "next_state" do

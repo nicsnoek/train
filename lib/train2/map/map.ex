@@ -29,11 +29,8 @@ defmodule Train2.Map.Map do
       map.sections,
       fn section ->
         v = Map.get(map.vehicles_by_location, section.from)
-        if v do
-          Tile.occupied_with(section.from, v)
-        else
-          Tile.at(section.from)
-        end
+        s = Signal.at(map.signals, section.from)
+        Tile.occupied_with(section.from, v, s)
       end
     )
   end
