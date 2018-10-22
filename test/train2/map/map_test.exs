@@ -9,7 +9,6 @@ defmodule Train2.Map.MapTest do
   @sectionA Section.new("A", "B")
   @sectionB Section.new("B", "A")
 
-
   describe "as_tiles" do
     test "converts basic map to tiles" do
       sections = [@sectionA, @sectionB]
@@ -31,7 +30,7 @@ defmodule Train2.Map.MapTest do
 
     defmodule AlwaysAdvance do
       @behaviour MovementModel
-      def next_state(vehicle, sections, _signals_by_location) do
+      def next_state(vehicle, sections, _signals) do
         section_with_vehicle = Enum.find(sections, fn section -> section.from == vehicle.location end)
         %{vehicle | location: section_with_vehicle.to}
       end
@@ -47,6 +46,40 @@ defmodule Train2.Map.MapTest do
       assert(next_state == Map.new(sections, [Vehicle.new("A", AlwaysAdvance)], []))
     end
 
+    test "makes signal go to stop when vehicle enters section" do
+      sections = [Section.new("A", "B"), Section.new("B", "C"), Section.new("C", "A")]
+      signalA = Signal.new("A", Signal.clear())
+      signalC = Signal.new("C", Signal.clear())
+      vehicle = Vehicle.new("B", AlwaysAdvance)
+      map = Map.new(sections, [vehicle], [signalA, signalC])
+      assert(Signal.at(map.signals, "A").state == Signal.clear())
+      assert(Signal.at(map.signals, "C").state == Signal.clear())
+      next_state = Map.next_state(map)
+      assert(Signal.at(next_state.signals, "A").state == Signal.clear())
+      assert(Signal.at(next_state.signals, "C").state == Signal.stop())
+    end
+  end
+
+  describe "toggle_signal" do
+    test "it clears signal at stop at given location and does not affect signals at other locations" do
+      sections = [Section.new("A", "B"), Section.new("B", "C"), Section.new("C", "A")]
+      signalA = Signal.new("A", Signal.stop())
+      signalC = Signal.new("C", Signal.stop())
+      map = Map.new(sections, [], [signalA, signalC])
+      new_map = Map.toggle_signal(map, "C")
+      assert(Signal.at(new_map.signals, "A").state == Signal.stop())
+      assert(Signal.at(new_map.signals, "C").state == Signal.clear())
+    end
+
+    test "it stops signal at clear at given location and does not affect signals at other locations" do
+      sections = [Section.new("A", "B"), Section.new("B", "C"), Section.new("C", "A")]
+      signalA = Signal.new("A", Signal.clear())
+      signalC = Signal.new("C", Signal.clear())
+      map = Map.new(sections, [], [signalA, signalC])
+      new_map = Map.toggle_signal(map, "C")
+      assert(Signal.at(new_map.signals, "A").state == Signal.clear())
+      assert(Signal.at(new_map.signals, "C").state == Signal.stop())
+    end
   end
 end
 

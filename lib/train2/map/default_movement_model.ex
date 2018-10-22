@@ -52,19 +52,17 @@ defmodule Train2.Map.DefaultMovementModel do
     Enum.find(sections, fn section -> section.from == location end)
   end
 
-  def next_state(vehicle, sections, signals_by_location) do
+  def next_state(vehicle, sections, signals) do
     section_with_vehicle = get_section(sections, vehicle.location)
-    case Signal.state(signals_by_location, section_with_vehicle.to) do
+    case Signal.state(signals, section_with_vehicle.to) do
       @signal_clear ->
         next_section = get_section(sections, section_with_vehicle.to)
         accelerate_to(vehicle, vehicle.max_speed, next_section)
       @signal_turnout ->
         next_section = get_section(sections, section_with_vehicle.turnout_to)
         if vehicle.speed >= section_with_vehicle.turnout_speed_limit do
-#        IO.puts("decelerate_to(vehicle, #{section_with_vehicle.turnout_speed_limit})")
           decelerate_to(vehicle, section_with_vehicle.turnout_speed_limit, next_section)
         else
-#        IO.puts("accelerate_to(vehicle, #{section_with_vehicle.turnout_speed_limit})")
           accelerate_to(vehicle, section_with_vehicle.turnout_speed_limit, next_section)
         end
       @signal_stop ->

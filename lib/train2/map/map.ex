@@ -3,8 +3,9 @@ defmodule Train2.Map.Map do
 
   alias Train2.Map.Vehicle
   alias Train2.Map.Tile
+  alias Train2.Map.Signal
 
-  defstruct sections: [], vehicles_by_location: nil, signals_by_location: nil
+  defstruct sections: [], vehicles_by_location: nil, signals: nil
 
   def new(sections) do
     new(sections, [], [])
@@ -16,11 +17,10 @@ defmodule Train2.Map.Map do
 
   def new(sections, vehicles, signals) do
     vehicles_by_location = by_location(vehicles)
-    signals_by_location = by_location(signals)
     %__MODULE__{
       sections: sections,
       vehicles_by_location: vehicles_by_location,
-      signals_by_location: signals_by_location
+      signals: Signal.signals(signals)
     }
   end
 
@@ -38,10 +38,29 @@ defmodule Train2.Map.Map do
     )
   end
 
+  defp next_vehicle_states(map) do
+    Map.values(map.vehicles_by_location)
+    |> Enum.map(fn v -> Vehicle.next_state(v, map.sections, map.signals) end)
+    |> by_location
+  end
+
   def next_state(map) do
-    vehicles = Map.values(map.vehicles_by_location)
-    next_state_vehicles = Enum.map(vehicles, fn v -> Vehicle.next_state(v, map.sections, map.signals_by_location) end)
-    new(map.sections, next_state_vehicles, Map.values(map.signals_by_location))
+    next_state_vehicles_by_location = next_vehicle_states(map)
+    next_signals = Signal.set_occupied_locations_to_stop(map.signals, Map.keys(next_state_vehicles_by_location))
+    %{map | vehicles_by_location: next_state_vehicles_by_location, signals: next_signals}
+  end
+
+  def signal_at_location(map, location) do
+    map.signals |> Signal.at(location)
+  end
+
+  def toggle_signal(map, location) do
+    signal = map.signals |> Signal.at(location)
+    if signal == nil do
+        map
+      else
+        %{map | signals: Signal.toggle_signal(map.signals, location)}
+    end
   end
 
 end

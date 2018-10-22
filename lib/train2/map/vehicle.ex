@@ -1,6 +1,8 @@
 defmodule Train2.Map.Vehicle do
   @moduledoc false
 
+  alias Train2.Map.Signal
+
   defstruct location: nil,
             movement_model: nil,
             speed: 0,
@@ -15,8 +17,8 @@ defmodule Train2.Map.Vehicle do
     }
   end
 
-  def next_state(vehicle, sections, signals_by_location \\ %{}) do
-    vehicle.movement_model.next_state(vehicle, sections, signals_by_location)
+  def next_state(vehicle, sections, signals \\ Signal.signals([])) do
+    vehicle.movement_model.next_state(vehicle, sections, signals)
   end
 
 end
