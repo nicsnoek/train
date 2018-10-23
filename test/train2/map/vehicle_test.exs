@@ -10,7 +10,21 @@ defmodule Train2.Map.VehicleTest do
   @sectionB Section.new("B", "C")
   @sectionC Section.new("C", "A", "B")
 
-  describe "next_state" do
+  describe "as_tile" do
+    test "returns map with all vehicle parameters" do
+      vehicle = %{Vehicle.new("A", DefaultMovementModel)|distance_to_next_section: 1, max_acceleration: 2, max_speed: 3, speed: 4 }
+      vehicle_as_tile = Vehicle.as_tile(vehicle)
+      assert(vehicle_as_tile == %{
+        location: "A",
+        distance_to_next_section: 1,
+        max_acceleration: 2,
+        max_speed: 3,
+        speed: 4
+      })
+    end
+  end
+
+  describe "with DefaultMovementModel, next_state" do
 
     test "accelerates vehicle from standstill" do
       sections = [@sectionA, @sectionB]

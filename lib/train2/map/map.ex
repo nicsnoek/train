@@ -5,7 +5,7 @@ defmodule Train2.Map.Map do
   alias Train2.Map.Tile
   alias Train2.Map.Signal
 
-  defstruct sections: [], vehicles_by_location: nil, signals: nil
+  defstruct initial_state: nil, sections: [], vehicles_by_location: nil, signals: nil
 
   def new(sections) do
     new(sections, [], [])
@@ -17,11 +17,17 @@ defmodule Train2.Map.Map do
 
   def new(sections, vehicles, signals) do
     vehicles_by_location = by_location(vehicles)
-    %__MODULE__{
+    map = %__MODULE__{
       sections: sections,
       vehicles_by_location: vehicles_by_location,
       signals: Signal.signals(signals)
     }
+    %{map| initial_state: map}
+  end
+
+  def reset(map) do
+    initial_state = map.initial_state
+    %{initial_state| initial_state: initial_state}
   end
 
   def as_tiles(map) do

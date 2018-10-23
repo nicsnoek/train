@@ -14,6 +14,10 @@ defmodule Train2.Map.Signal do
     }
   end
 
+  def as_tile(signal) do
+    Map.from_struct(signal) |> Map.delete(:location)
+  end
+
   def with_turnout(signal) do
     %{signal|has_turnout: true}
   end

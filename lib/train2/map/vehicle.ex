@@ -21,5 +21,9 @@ defmodule Train2.Map.Vehicle do
     vehicle.movement_model.next_state(vehicle, sections, signals)
   end
 
+  def as_tile(vehicle) do
+    Map.from_struct(vehicle) |> Map.delete(:movement_model)
+  end
+
 end
 
