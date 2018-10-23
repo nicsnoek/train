@@ -17,8 +17,8 @@ defmodule Train.Map.MapServerTest do
   @test_map Map.new([@sectionA, @sectionB], [@vehicle], [@signal])
 
   setup do
-    map_server = start_supervised!({MapServer, @test_map})
-    %{map_server: map_server}
+    start_supervised!({MapServer, @test_map})
+    :ok
   end
 
   describe "read" do
