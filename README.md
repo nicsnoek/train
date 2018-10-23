@@ -1,4 +1,4 @@
-# Train2
+# Train
 
 To start your Phoenix server:
 

@@ -6,15 +6,15 @@
 use Mix.Config
 
 # General application configuration
-config :train2,
-  ecto_repos: [Train2.Repo]
+config :train,
+  ecto_repos: [Train.Repo]
 
 # Configures the endpoint
-config :train2, Train2Web.Endpoint,
+config :train, TrainWeb.Endpoint,
   url: [host: "localhost"],
   secret_key_base: "XrUbCt0U6nhn69ujudMlgh3G2Kilw9K30jwFLZANX+JEZeL5AvICuN1n6DF7A25P",
-  render_errors: [view: Train2Web.ErrorView, accepts: ~w(html json)],
-  pubsub: [name: Train2.PubSub,
+  render_errors: [view: TrainWeb.ErrorView, accepts: ~w(html json)],
+  pubsub: [name: Train.PubSub,
            adapter: Phoenix.PubSub.PG2]
 
 # Configures Elixir's Logger

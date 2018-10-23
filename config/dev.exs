@@ -6,7 +6,7 @@ use Mix.Config
 # The watchers configuration can be used to run external
 # watchers to your application. For example, we use it
 # with brunch.io to recompile .js and .css sources.
-config :train2, Train2Web.Endpoint,
+config :train, TrainWeb.Endpoint,
   http: [port: 4000],
   debug_errors: true,
   code_reloader: true,
@@ -31,13 +31,13 @@ config :train2, Train2Web.Endpoint,
 # different ports.
 
 # Watch static and templates for browser reloading.
-config :train2, Train2Web.Endpoint,
+config :train, TrainWeb.Endpoint,
   live_reload: [
     patterns: [
       ~r{priv/static/.*(js|css|png|jpeg|jpg|gif|svg)$},
       ~r{priv/gettext/.*(po)$},
-      ~r{lib/train2_web/views/.*(ex)$},
-      ~r{lib/train2_web/templates/.*(eex)$}
+      ~r{lib/train_web/views/.*(ex)$},
+      ~r{lib/train_web/templates/.*(eex)$}
     ]
   ]
 
@@ -49,10 +49,10 @@ config :logger, :console, format: "[$level] $message\n"
 config :phoenix, :stacktrace_depth, 20
 
 # Configure your database
-config :train2, Train2.Repo,
+config :train, Train.Repo,
   adapter: Ecto.Adapters.Postgres,
   username: "postgres",
   password: "",
-  database: "train2_dev",
+  database: "train_dev",
   hostname: "localhost",
   pool_size: 10

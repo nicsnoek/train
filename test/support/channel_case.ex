@@ -1,4 +1,4 @@
-defmodule Train2Web.ChannelCase do
+defmodule TrainWeb.ChannelCase do
   @moduledoc """
   This module defines the test case to be used by
   channel tests.
@@ -21,15 +21,15 @@ defmodule Train2Web.ChannelCase do
       use Phoenix.ChannelTest
 
       # The default endpoint for testing
-      @endpoint Train2Web.Endpoint
+      @endpoint TrainWeb.Endpoint
     end
   end
 
 
   setup tags do
-    :ok = Ecto.Adapters.SQL.Sandbox.checkout(Train2.Repo)
+    :ok = Ecto.Adapters.SQL.Sandbox.checkout(Train.Repo)
     unless tags[:async] do
-      Ecto.Adapters.SQL.Sandbox.mode(Train2.Repo, {:shared, self()})
+      Ecto.Adapters.SQL.Sandbox.mode(Train.Repo, {:shared, self()})
     end
     :ok
   end

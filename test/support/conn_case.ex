@@ -1,4 +1,4 @@
-defmodule Train2Web.ConnCase do
+defmodule TrainWeb.ConnCase do
   @moduledoc """
   This module defines the test case to be used by
   tests that require setting up a connection.
@@ -19,18 +19,18 @@ defmodule Train2Web.ConnCase do
     quote do
       # Import conveniences for testing with connections
       use Phoenix.ConnTest
-      import Train2Web.Router.Helpers
+      import TrainWeb.Router.Helpers
 
       # The default endpoint for testing
-      @endpoint Train2Web.Endpoint
+      @endpoint TrainWeb.Endpoint
     end
   end
 
 
   setup tags do
-    :ok = Ecto.Adapters.SQL.Sandbox.checkout(Train2.Repo)
+    :ok = Ecto.Adapters.SQL.Sandbox.checkout(Train.Repo)
     unless tags[:async] do
-      Ecto.Adapters.SQL.Sandbox.mode(Train2.Repo, {:shared, self()})
+      Ecto.Adapters.SQL.Sandbox.mode(Train.Repo, {:shared, self()})
     end
     {:ok, conn: Phoenix.ConnTest.build_conn()}
   end

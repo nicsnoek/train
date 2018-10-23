@@ -1,4 +1,4 @@
-defmodule Train2.DataCase do
+defmodule Train.DataCase do
   @moduledoc """
   This module defines the setup for tests requiring
   access to the application's data layer.
@@ -16,20 +16,20 @@ defmodule Train2.DataCase do
 
   using do
     quote do
-      alias Train2.Repo
+      alias Train.Repo
 
       import Ecto
       import Ecto.Changeset
       import Ecto.Query
-      import Train2.DataCase
+      import Train.DataCase
     end
   end
 
   setup tags do
-    :ok = Ecto.Adapters.SQL.Sandbox.checkout(Train2.Repo)
+    :ok = Ecto.Adapters.SQL.Sandbox.checkout(Train.Repo)
 
     unless tags[:async] do
-      Ecto.Adapters.SQL.Sandbox.mode(Train2.Repo, {:shared, self()})
+      Ecto.Adapters.SQL.Sandbox.mode(Train.Repo, {:shared, self()})
     end
 
     :ok
